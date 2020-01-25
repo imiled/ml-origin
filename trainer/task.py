@@ -1,5 +1,6 @@
 """A simple main file to showcase the template."""
 
+import trainer
 import argparse
 import logging.config
 import os
@@ -17,6 +18,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 This module is an example for a single Python application with some
 top level functions. The tests directory includes some unitary tests
 for these functions.
+
 This is one of two main files samples included in this
 template. Please feel free to remove this, or the other
 (sklearn_main.py), or adapt as you need.
@@ -51,6 +53,7 @@ def _download_file(bucket_name, remote_name, dest_name):
 
 def download_prepare_data(bucket_name, prefix, train_split):
   """Download and prepare the data for training.
+
   Args:
     bucket_name: Name of the bucket where the data is stored
     prefix: Prefix to the path of all the files
@@ -141,6 +144,20 @@ def train_and_evaluate(
 
   # FIXME: save model
   # FIXME: upload to GCS
+
+  localdir = 'my_model'
+  tf.keras.experimental.export_saved_model(model, localdir)
+  # TF 2.0 --> model.save(...)
+
+  # gs://bucket_name/prefix1/prefix2/....
+  dest_bucket_name = job_dir.split('/')[2]
+  path_in_bucket = 'saved_models' + trainer.__version__
+
+  # Upload to GCS
+  client = storage.Client()
+  bucket = client.bucket(dest_bucket_name)
+  LOGGER.info("Uploading model to gs://%s/%s" % (bucket_name, path_in_bucket))
+  upload_local_directory_to_gcs(localdir, bucket, path_in_bucket)
 
 
 if __name__ == '__main__':
