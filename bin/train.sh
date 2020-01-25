@@ -4,7 +4,7 @@ gcloud ai-platform jobs submit training generator_train_`date +"%s"` \
   --scale-tier basic \
   --package-path ./trainer \
   --module-name trainer.task \
-  --job-dir=gs://ihr-kschool-training/tmp/ \
+  --job-dir=gs://imiled-project20200124/tmp/ \
   --region us-central1 \
   -- \
   --epochs 10 \
