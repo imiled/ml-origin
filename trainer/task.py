@@ -8,6 +8,7 @@ import random
 import tensorflow as tf
 
 from .model import build_model
+from .utils import upload_local_directory_to_gcs
 from google.cloud import storage
 from tensorflow.core.framework.summary_pb2 import Summary
 from tensorflow.keras import optimizers
@@ -141,9 +142,6 @@ def train_and_evaluate(
 
   summary_writer.add_summary(summary)
   summary_writer.flush()
-
-  # FIXME: save model
-  # FIXME: upload to GCS
 
   localdir = 'my_model'
   tf.keras.experimental.export_saved_model(model, localdir)
