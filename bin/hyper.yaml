@@ -3,7 +3,7 @@ trainingInput:
     goal: MAXIMIZE
     hyperparameterMetricTag: accuracy_dogs_cats
     maxTrials: 100
-    maxParallelTrials: 20
+    maxParallelTrials: 4
     enableTrialEarlyStopping: True
     params:
       - parameterName: epochs
